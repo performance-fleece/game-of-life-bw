@@ -1,7 +1,8 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+// import logo from './logo.svg';
 import './App.css';
 import Cell from './components/Cell';
+import CustomForm from './components/Form';
 
 class App extends React.Component {
     constructor() {
@@ -38,6 +39,7 @@ class App extends React.Component {
                     <div className="pre-mades">pre-mades here</div>
                 </div>
                 <div className="lower-wrapper">
+                    <CustomForm />
                     <div className="game-description"></div>
                 </div>
             </div>
