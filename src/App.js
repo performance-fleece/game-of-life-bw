@@ -100,9 +100,7 @@ class Cell extends Component {
 		return (
 			<div
 				onClick={() => this.props.storeCell(this.props.position)}
-				className={
-					this.props.live ? "cellContainerLive" : "cellContainerDead"
-				}
+				className={this.props.live ? "cellAlive" : "cellDead"}
 			></div>
 		);
 	}
