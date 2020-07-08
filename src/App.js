@@ -9,6 +9,7 @@ export default class App extends Component {
 			size: [50, 25],
 			gameRunning: false,
 			game: new Game(),
+			interval: 1000,
 		};
 		this.handleColumnChange = this.handleColumnChange.bind(this);
 		this.handleRowChange = this.handleRowChange.bind(this);
@@ -17,6 +18,7 @@ export default class App extends Component {
 		this.renderGame = this.renderGame.bind(this);
 		this.updateCell = this.updateCell.bind(this);
 		this.resetGame = this.resetGame.bind(this);
+		this.changeInterval = this.changeInterval.bind(this);
 	}
 
 	renderGame() {
@@ -56,24 +58,19 @@ export default class App extends Component {
 		return newBoard;
 	}
 
-	handleRowChange(event) {
+	changeInterval = (event) => {
 		if (!this.state.gameRunning) {
-			var actualSize = this.state.size;
-			if (event.target.value < 20) actualSize[1] = event.target.value;
-			else actualSize[1] = 20;
-
 			this.setState({
-				size: actualSize,
+				interval: event.target.value,
 			});
-			this.renderGame();
 		}
-	}
+	};
 
 	handleColumnChange(event) {
 		if (!this.state.gameRunning) {
 			var actualSize = this.state.size;
 			if (event.target.value < 60) actualSize[0] = event.target.value;
-			else actualSize[1] = 60;
+			else actualSize[0] = 60;
 
 			this.setState({
 				size: actualSize,
@@ -81,6 +78,27 @@ export default class App extends Component {
 			this.renderGame();
 		}
 	}
+
+	handleRowChange(event) {
+		if (!this.state.gameRunning) {
+			var actualSize = this.state.size;
+			if (event.target.value < 25) actualSize[1] = event.target.value;
+			else actualSize[1] = 25;
+
+			this.setState({
+				size: actualSize,
+			});
+			this.renderGame();
+		}
+	}
+
+	changeInterval = (event) => {
+		if (!this.state.gameRunning) {
+			this.setState({
+				interval: event.target.value * 1000,
+			});
+		}
+	};
 
 	startGame() {
 		if (!this.state.gameRunning) {
@@ -89,7 +107,10 @@ export default class App extends Component {
 					gameRunning: true,
 				},
 				() => {
-					this.intervalRef = setInterval(() => this.runGame(), 15);
+					this.intervalRef = setInterval(
+						() => this.runGame(),
+						this.state.interval
+					);
 				}
 			);
 		}
@@ -150,6 +171,15 @@ export default class App extends Component {
 								type="text"
 								value={this.state.size[0]}
 								onChange={this.handleColumnChange}
+							/>
+						</label>
+						<label className="label">
+							Interval/sec:
+							<input
+								className="input"
+								type="number"
+								value={this.state.interval / 1000}
+								onChange={this.changeInterval}
 							/>
 						</label>
 					</div>
