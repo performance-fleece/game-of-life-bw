@@ -46,6 +46,7 @@ export default class Game {
 			this.calculateDeadCellsNeighbors(item);
 		});
 		this.generation++;
+		return new Game(this.generation, this.nextGeneration);
 	}
 
 	calculateLiveCellsNeighbors(position) {
