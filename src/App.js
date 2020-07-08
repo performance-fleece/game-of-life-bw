@@ -153,50 +153,80 @@ export default class App extends Component {
 	render() {
 		return (
 			<div className="main">
-				<div className="headerWrapper">
-					<div className="headerInner">
-						<label className="label">
-							Rows:
-							<input
-								className="input"
-								type="text"
-								value={this.state.size[1]}
-								onChange={this.handleRowChange}
-							/>
-						</label>
-						<label className="label">
-							Rows:
-							<input
-								className="input"
-								type="text"
-								value={this.state.size[0]}
-								onChange={this.handleColumnChange}
-							/>
-						</label>
-						<label className="label">
-							Interval/sec:
-							<input
-								className="input"
-								type="number"
-								value={this.state.interval / 1000}
-								onChange={this.changeInterval}
-							/>
-						</label>
-					</div>
-					<div className="headerButtons">
-						<button className="submit" onClick={this.startGame}>
-							Start
-						</button>
-						<button className="submit" onClick={this.stopGame}>
-							Stop
-						</button>
-						<button className="submit" onClick={this.resetGame}>
-							Reset
-						</button>
-					</div>
-					Generation: {this.state.game.getGeneration()}
+				<div className="header">
+					<h1>Conway's Game of Life</h1>
 				</div>
-				<div className="boardContainer">{this.renderGame()}</div>
+				<div className="middleWrapper">
+					<div className="boardContainer">{this.renderGame()}</div>
+					<div className="rulesContainer">
+						<h4>Rules</h4>
+						<ul className="a">
+							<li>
+								If the cell is alive and has 2 or 3 neighbors,
+								then it remains alive. Otherwise it dies
+							</li>
+							<li>
+								If the cell is dead and has exactly 3 live
+								neighbors, it will come to life. Otherwise it
+								remains dead.
+							</li>
+						</ul>
+						<div className="controlWrapper">
+							<div className="controlInner">
+								<label className="label">
+									Rows:
+									<input
+										className="input"
+										type="text"
+										value={this.state.size[1]}
+										onChange={this.handleRowChange}
+									/>
+								</label>
+								<label className="label">
+									Rows:
+									<input
+										className="input"
+										type="text"
+										value={this.state.size[0]}
+										onChange={this.handleColumnChange}
+									/>
+								</label>
+								<label className="label">
+									Seconds/Int:
+									<input
+										className="input"
+										type="number"
+										value={this.state.interval / 1000}
+										onChange={this.changeInterval}
+									/>
+								</label>
+							</div>
+							<div className="controlButtons">
+								<button
+									className="submit"
+									onClick={this.startGame}
+								>
+									Start
+								</button>
+								<button
+									className="submit"
+									onClick={this.stopGame}
+								>
+									Stop
+								</button>
+								<button
+									className="submit"
+									onClick={this.resetGame}
+								>
+									Reset
+								</button>
+							</div>
+							<div className="generation">
+								Generation: {this.state.game.getGeneration()}
+							</div>
+						</div>
+					</div>
+				</div>
 			</div>
 		);
 	}
