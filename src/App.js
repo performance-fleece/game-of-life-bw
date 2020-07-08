@@ -190,7 +190,7 @@ export default class App extends Component {
 									/>
 								</label>
 								<label className="label">
-									Rows:
+									Columns:
 									<input
 										className="input"
 										type="text"
