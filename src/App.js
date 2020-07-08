@@ -6,10 +6,11 @@ export default class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			size: [50, 25],
+			columns: 50,
+			rows: 25,
 			gameRunning: false,
 			game: new Game(),
-			interval: 1000,
+			interval: 500,
 		};
 		this.handleColumnChange = this.handleColumnChange.bind(this);
 		this.handleRowChange = this.handleRowChange.bind(this);
@@ -26,8 +27,8 @@ export default class App extends Component {
 		let newBoard = [];
 		let cellRow = [];
 
-		for (let i = 0; i < this.state.size[0]; i++) {
-			for (let j = 0; j < this.state.size[1]; j++) {
+		for (let i = 0; i < this.state.columns; i++) {
+			for (let j = 0; j < this.state.rows; j++) {
 				if (this.state.game.isCellAlive(i + " , " + j)) {
 					cellRow.push(
 						<Cell
@@ -59,22 +60,14 @@ export default class App extends Component {
 		return newBoard;
 	}
 
-	changeInterval = (event) => {
-		if (!this.state.gameRunning) {
-			this.setState({
-				interval: event.target.value,
-			});
-		}
-	};
-
 	handleColumnChange(event) {
 		if (!this.state.gameRunning) {
-			var actualSize = this.state.size;
-			if (event.target.value < 60) actualSize[0] = event.target.value;
-			else actualSize[0] = 60;
+			var newColumns = this.state.columns;
+			if (event.target.value < 60) newColumns = event.target.value;
+			else newColumns = 60;
 
 			this.setState({
-				size: actualSize,
+				columns: newColumns,
 			});
 			this.renderGame();
 		}
@@ -82,12 +75,12 @@ export default class App extends Component {
 
 	handleRowChange(event) {
 		if (!this.state.gameRunning) {
-			var actualSize = this.state.size;
-			if (event.target.value < 25) actualSize[1] = event.target.value;
-			else actualSize[1] = 25;
+			var newRows = this.state.rows;
+			if (event.target.value < 25) newRows = event.target.value;
+			else newRows = 25;
 
 			this.setState({
-				size: actualSize,
+				rows: newRows,
 			});
 			this.renderGame();
 		}
@@ -179,7 +172,7 @@ export default class App extends Component {
 									<input
 										className="input"
 										type="text"
-										value={this.state.size[1]}
+										value={this.state.rows}
 										onChange={this.handleRowChange}
 									/>
 								</label>
@@ -188,7 +181,7 @@ export default class App extends Component {
 									<input
 										className="input"
 										type="text"
-										value={this.state.size[0]}
+										value={this.state.columns}
 										onChange={this.handleColumnChange}
 									/>
 								</label>
