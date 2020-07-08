@@ -18,7 +18,7 @@ export default class App extends Component {
 		this.renderGame = this.renderGame.bind(this);
 		this.updateCell = this.updateCell.bind(this);
 		this.resetGame = this.resetGame.bind(this);
-		this.changeInterval = this.changeInterval.bind(this);
+		this.handleChangeInterval = this.handleChangeInterval.bind(this);
 		this.stepForward = this.stepForward.bind(this);
 	}
 
@@ -93,7 +93,7 @@ export default class App extends Component {
 		}
 	}
 
-	changeInterval(event) {
+	handleChangeInterval(event) {
 		if (!this.state.gameRunning) {
 			this.setState({
 				interval: event.target.value * 1000,
@@ -204,7 +204,7 @@ export default class App extends Component {
 										className="input"
 										type="number"
 										value={this.state.interval / 1000}
-										onChange={this.changeInterval}
+										onChange={this.handleChangeInterval}
 									/>
 								</label>
 							</div>
