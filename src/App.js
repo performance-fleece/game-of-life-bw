@@ -1,12 +1,22 @@
 import React, { Component } from "react";
 import "./App.css";
+import Game from "./components/Game";
 
 export default class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			size: [50, 25],
+			gameRunning: false,
+			game: new Game(),
 		};
+		this.handleColumnChange = this.handleColumnChange.bind(this);
+		this.handleRowChange = this.handleRowChange.bind(this);
+		this.startGame = this.startGame.bind(this);
+		this.stopGame = this.stopGame.bind(this);
+		this.renderGame = this.renderGame.bind(this);
+		this.updateCell = this.updateCell.bind(this);
+		this.resetGame = this.resetGame.bind(this);
 	}
 
 	renderGame() {
@@ -14,7 +24,7 @@ export default class App extends Component {
 		let cellRow = [];
 
 		for (let i = 0; i < this.state.size[0]; i++) {
-			for (let j = 0; j < this.state[1]; j++) {
+			for (let j = 0; j < this.state.size[1]; j++) {
 				if (this.state.game.isCellAlive(i + " , " + j)) {
 					cellRow.push(
 						<Cell
@@ -46,14 +56,78 @@ export default class App extends Component {
 		return newBoard;
 	}
 
-	handleRowChange() {}
+	handleRowChange(event) {
+		if (!this.state.gameRunning) {
+			var actualSize = this.state.size;
+			if (event.target.value < 20) actualSize[1] = event.target.value;
+			else actualSize[1] = 20;
 
-	handleColumnChange() {}
+			this.setState({
+				size: actualSize,
+			});
+			this.renderGame();
+		}
+	}
 
-	startGame() {}
-	stopGame() {}
+	handleColumnChange(event) {
+		if (!this.state.gameRunning) {
+			var actualSize = this.state.size;
+			if (event.target.value < 60) actualSize[0] = event.target.value;
+			else actualSize[1] = 60;
 
-	getGeneration() {}
+			this.setState({
+				size: actualSize,
+			});
+			this.renderGame();
+		}
+	}
+
+	startGame() {
+		if (!this.state.gameRunning) {
+			this.setState(
+				{
+					gameRunning: true,
+				},
+				() => {
+					this.intervalRef = setInterval(() => this.runGame(), 15);
+				}
+			);
+		}
+	}
+	stopGame() {
+		this.setState(
+			{
+				gameRunning: false,
+			},
+			() => {
+				if (this.intervalRef) {
+					clearInterval(this.intervalRef);
+				}
+			}
+		);
+	}
+
+	resetGame() {
+		this.stopGame();
+		this.setState({
+			game: new Game(),
+		});
+		this.renderGame();
+	}
+
+	runGame() {
+		this.setState({
+			game: this.state.game.addGeneration(),
+		});
+	}
+
+	updateCell(position) {
+		if (!this.state.gameRunning) {
+			this.setState({
+				game: this.state.game.updateCell(position),
+			});
+		}
+	}
 
 	render() {
 		return (
@@ -86,6 +160,9 @@ export default class App extends Component {
 						<button className="submit" onClick={this.stopGame}>
 							Stop
 						</button>
+						<button className="submit" onClick={this.resetGame}>
+							Reset
+						</button>
 					</div>
 					Generation: {this.state.game.getGeneration()}
 				</div>
@@ -99,7 +176,7 @@ class Cell extends Component {
 	render() {
 		return (
 			<div
-				onClick={() => this.props.storeCell(this.props.position)}
+				onClick={() => this.props.updateCell(this.props.position)}
 				className={this.props.live ? "cellAlive" : "cellDead"}
 			></div>
 		);
