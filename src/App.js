@@ -19,6 +19,7 @@ export default class App extends Component {
 		this.updateCell = this.updateCell.bind(this);
 		this.resetGame = this.resetGame.bind(this);
 		this.changeInterval = this.changeInterval.bind(this);
+		this.stepForward = this.stepForward.bind(this);
 	}
 
 	renderGame() {
@@ -92,13 +93,13 @@ export default class App extends Component {
 		}
 	}
 
-	changeInterval = (event) => {
+	changeInterval(event) {
 		if (!this.state.gameRunning) {
 			this.setState({
 				interval: event.target.value * 1000,
 			});
 		}
-	};
+	}
 
 	startGame() {
 		if (!this.state.gameRunning) {
@@ -148,6 +149,12 @@ export default class App extends Component {
 				game: this.state.game.updateCell(position),
 			});
 		}
+	}
+
+	stepForward() {
+		this.setState({
+			game: this.state.game.addGeneration(),
+		});
 	}
 
 	render() {
@@ -204,6 +211,12 @@ export default class App extends Component {
 							<div className="controlButtons">
 								<button
 									className="submit"
+									onClick={this.stepForward}
+								>
+									Step Forward
+								</button>
+								<button
+									className="submit"
 									onClick={this.startGame}
 								>
 									Start
@@ -221,6 +234,7 @@ export default class App extends Component {
 									Reset
 								</button>
 							</div>
+							<div className="controlButtons"></div>
 							<div className="generation">
 								Generation: {this.state.game.getGeneration()}
 							</div>
