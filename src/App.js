@@ -19,7 +19,7 @@ export default class App extends Component {
 		this.updateCell = this.updateCell.bind(this);
 		this.resetGame = this.resetGame.bind(this);
 		this.handleChangeInterval = this.handleChangeInterval.bind(this);
-		this.stepForward = this.stepForward.bind(this);
+		this.runGame = this.runGame.bind(this);
 	}
 
 	renderGame() {
@@ -151,12 +151,6 @@ export default class App extends Component {
 		}
 	}
 
-	stepForward() {
-		this.setState({
-			game: this.state.game.addGeneration(),
-		});
-	}
-
 	render() {
 		return (
 			<div className="main">
@@ -211,7 +205,7 @@ export default class App extends Component {
 							<div className="controlButtons">
 								<button
 									className="submit"
-									onClick={this.stepForward}
+									onClick={this.runGame}
 								>
 									Step Forward
 								</button>
